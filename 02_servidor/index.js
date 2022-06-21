@@ -8,6 +8,10 @@ const io = require("socket.io")(http, {
   },
 });
 
+io.on('connection',(socket)=>{
+  console.log('Nuevo usuario conectado');
+})
+
 app.get("/", (req, res) => {
   res.send("<h1>HolaMundo</h1>");
 });
