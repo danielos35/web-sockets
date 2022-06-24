@@ -10,9 +10,10 @@ export class SocketService {
     autoConnect:true
   })
   constructor() { 
-    this.io.emit("test"); 
-    this.io.on('test2',()=>{
-      alert('test 2')
+    this.io.emit("test", {text:'Hola desde el cliente'}); 
+    this.io.on('test2',({servidor})=>{
+      console.log(servidor);
+      
       
     })
   }
