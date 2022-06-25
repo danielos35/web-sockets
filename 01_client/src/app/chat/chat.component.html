@@ -4,5 +4,7 @@
 </div>
 
  <div class="inputContainer">
-     <input type="text">
+     <form (submit)="enviarMensaje()">
+         <input [(ngModel)]="mensajes" [ngModelOptions]="{standalone:true}" type="text">
+     </form>
  </div>
