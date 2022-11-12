@@ -1,6 +1,6 @@
 <div class="chatContainer">
-    <p class="local">Mensaje Local</p>
-    <p class="remoto">Mensaje remoto</p>
+    <p [ngClass]="{'local':message.messageType === 1,'remoto':message.messageType === 2}" class="local" *ngFor="let message of chat.chat">{{message.text}}</p>
+    <!-- <p class="remoto">Mensaje remoto</p> -->
 </div>
 
  <div class="inputContainer">

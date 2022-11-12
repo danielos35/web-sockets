@@ -8,14 +8,15 @@ const io = require("socket.io")(http, {
   },
 });
 
-io.on('connection',(socket)=>{
-  console.log('Nuevo usuario conectado');
-  socket.on('test',({text})=>{
-    console.log('Mensaje desde el cliente: '+ text);
-    socket.emit('test2', {servidor:'servidor 1616'})
-  })
+io.on("connection", (socket) => {
+  console.log("Nuevo usuario conectado");
+  socket.on("sendMessage", (messageInfo) => {
+    console.log("Enviando mensaje");
+    socket.broadcast.emit("reciveMessage", messageInfo);
+  });
+});
 
-})
+io.emit("test2", { servidor: "servidor 1616" });
 
 app.get("/", (req, res) => {
   res.send("<h1>HolaMundo</h1>");
