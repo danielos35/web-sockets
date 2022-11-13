@@ -14,6 +14,12 @@ io.on("connection", (socket) => {
     console.log("Enviando mensaje");
     socket.broadcast.emit("reciveMessage", messageInfo);
   });
+
+  let i = 0;
+  setInterval(() => {
+    i++;
+    socket.emit("data_graph", { data: i });
+  }, 2000);
 });
 
 io.emit("test2", { servidor: "servidor 1616" });
