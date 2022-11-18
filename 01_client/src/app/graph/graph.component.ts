@@ -8,7 +8,25 @@ import { SocketService } from '../services/socket.service';
 })
 export class GraphComponent implements OnInit {
   data!: number;
-  multi!: any[];
+  multi: any[] = [
+    {
+      name: 'BTC',
+      series: [
+        {
+          name: '200',
+          value: 25000,
+        },
+        {
+          name: '201',
+          value: 32000,
+        },
+      ],
+    },
+    {
+      name: 'ETH',
+      series: [],
+    },
+  ];
   legend: boolean = false;
   animations: boolean = true;
   xAxis: boolean = true;
@@ -22,31 +40,13 @@ export class GraphComponent implements OnInit {
     domain: ['#72efdd', '#ffd60a'],
   };
 
-  constructor(public socketIO: SocketService) {
-    this.multi = [
-      {
-        name: 'BTC',
-        series: [
-          {
-            name: '200',
-            value: 25000,
-          },
-          {
-            name: '201',
-            value: 32000,
-          },
-        ],
-      },
-      {
-        name: 'ETH',
-        series: [],
-      },
-    ];
-  }
+  constructor(public socketIO: SocketService) {}
 
   ngOnInit(): void {
     this.socketIO.io.on('data_graph', (res) => {
       this.data = res.data;
+      this.multi = res;
+      console.log(res);
     });
   }
 

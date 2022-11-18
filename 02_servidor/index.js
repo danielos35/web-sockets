@@ -15,11 +15,38 @@ io.on("connection", (socket) => {
     socket.broadcast.emit("reciveMessage", messageInfo);
   });
 
-  let i = 0;
+  let i = 200;
   setInterval(() => {
     i++;
-    socket.emit("data_graph", { data: i });
-  }, 2000);
+    socket.emit("data_graph", [
+      {
+        name: "BTC",
+        series: [
+          {
+            name: "200",
+            value: 25000,
+          },
+          {
+            name: i,
+            value: 32000 + i,
+          },
+        ],
+      },
+      {
+        name: "ETH",
+        series: [
+          {
+            name: "200",
+            value: 25000,
+          },
+          {
+            name: 300,
+            value: 32000,
+          },
+        ],
+      },
+    ]);
+  }, 1000);
 });
 
 io.emit("test2", { servidor: "servidor 1616" });
