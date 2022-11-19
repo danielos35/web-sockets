@@ -46,7 +46,7 @@ io.on("connection", (socket) => {
         ],
       },
     ]);
-  }, 1000);
+  }, 2000);
 });
 
 io.emit("test2", { servidor: "servidor 1616" });
