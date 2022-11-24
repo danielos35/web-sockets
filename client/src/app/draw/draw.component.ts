@@ -1,30 +1,105 @@
-import { Component, HostListener, ViewChild } from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  HostListener,
+  ViewChild,
+  OnInit,
+  AfterViewInit,
+} from '@angular/core';
 
 @Component({
   selector: 'app-draw',
   templateUrl: './draw.component.html',
   styleUrls: ['./draw.component.scss'],
 })
-export class DrawComponent {
-  @ViewChild('canvasRef', { static: false }) canvasRef: any;
+export class DrawComponent implements OnInit, AfterViewInit {
+  @ViewChild('canvasRef', { static: false })
+  canvasRef!: ElementRef<HTMLCanvasElement>;
 
-  public width = 800;
-  public height = 800;
+  public width = 400;
+  public height = 400;
 
   /*
     Opcion nativa, 
   */
-  private cd!: CanvasRenderingContext2D;
+  private cx!: CanvasRenderingContext2D | null;
   private cordenadas!: Array<any>;
 
   /*
     Escuchar evento
   */
 
-  @HostListener('documnet:mousemove', ['$event'])
+  private points: Array<any> = [];
+
+  ngOnInit(): void {}
+
+  ngAfterViewInit(): void {
+    this.preparaLienzo();
+  }
+
+  @HostListener('document:mousemove', ['$event'])
   onMousemove = (evento: any) => {
     if (evento.target.id === 'canvasId') {
-      console.log(evento);
+      this.escribir(evento);
     }
   };
+
+  private preparaLienzo(): any {
+    const canvasEl = this.canvasRef.nativeElement;
+
+    // Llamar al contexto para dibujar
+    this.cx = canvasEl.getContext('2d');
+    canvasEl.width = this.width;
+    canvasEl.height = this.height;
+    let number = 2;
+
+    // Elemento posiblemente null
+    // Ancho del pincel
+    this.cx!.lineWidth = number;
+
+    //Terminación de la linea
+    this.cx!.lineCap = 'round';
+
+    // Color de la linea
+    this.cx!.strokeStyle = '#000';
+  }
+
+  escribir(res: any) {
+    const canvasEl = this.canvasRef.nativeElement;
+
+    // Obtener las dimensiones (ubicación en pixeles || coordenadas || posición)
+    const rect = canvasEl.getBoundingClientRect();
+    const prevPros = {
+      x: res.clientX - rect.left,
+      y: res.clientY - rect.top,
+    };
+
+    this.pintarDibujo(prevPros);
+  }
+
+  pintarDibujo(prePos: any, emit = true) {
+    this.points.push(prePos);
+    if (this.points.length > 3) {
+      const prePos = this.points[this.points.length - 1];
+      const currentPos = this.points[this.points.length - 2];
+      this.pintarEnCanvas(prePos, currentPos);
+    }
+  }
+
+  pintarEnCanvas(prePos: any, currentPos: any) {
+    if (!this.cx) {
+      return;
+    }
+
+    // Iniciar a pintar
+    this.cx.beginPath();
+
+    if (prePos) {
+      this.cx.moveTo(prePos.x, prePos.y);
+      this.cx.lineTo(currentPos.x, currentPos.y);
+
+      // dibujar
+      this.cx.stroke();
+    }
+  }
 }
