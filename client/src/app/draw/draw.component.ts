@@ -16,6 +16,8 @@ export class DrawComponent implements OnInit, AfterViewInit {
   @ViewChild('canvasRef', { static: false })
   canvasRef!: ElementRef<HTMLCanvasElement>;
 
+  public isAvalible!: boolean;
+
   public width = 400;
   public height = 400;
 
@@ -39,8 +41,15 @@ export class DrawComponent implements OnInit, AfterViewInit {
 
   @HostListener('document:mousemove', ['$event'])
   onMousemove = (evento: any) => {
-    if (evento.target.id === 'canvasId') {
+    if (evento.target.id === 'canvasId' && this.isAvalible) {
       this.escribir(evento);
+    }
+  };
+
+  @HostListener('click', ['$event'])
+  onClick = (evento: any) => {
+    if (evento.target.id === 'canvasId') {
+      this.isAvalible = !this.isAvalible;
     }
   };
 
@@ -101,5 +110,10 @@ export class DrawComponent implements OnInit, AfterViewInit {
       // dibujar
       this.cx.stroke();
     }
+  }
+
+  clearZone() {
+    this.points = [];
+    this.cx?.clearRect(0, 0, this.width, this.height);
   }
 }
