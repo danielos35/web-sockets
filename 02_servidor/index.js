@@ -8,6 +8,45 @@ const io = require("socket.io")(http, {
   },
 });
 
+
+// <<<<<<< DRAW >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+io.on('conection', (socket) => {
+
+  // Capturar id que se genera por cada conexión
+  const idHandShake = socket.idHandShake;
+
+  // Nombre de la sala que estamos pasando por el socket
+  const { nameRoom } = socket.handshake.query;
+
+  console.log(`Dispositivo ${idHandShake} ${nameRoom}`);
+})
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+
+// CODE GRAPH
+/*
 io.on("connection", (socket) => {
   console.log("Nuevo usuario conectado");
   socket.on("sendMessage", (messageInfo) => {
@@ -48,6 +87,7 @@ io.on("connection", (socket) => {
     ]);
   }, 2000);
 });
+*/
 
 io.emit("test2", { servidor: "servidor 1616" });
 
