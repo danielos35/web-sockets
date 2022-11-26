@@ -37,8 +37,9 @@ export class DrawComponent implements OnInit, AfterViewInit {
   constructor(private socket: SocketsService) {
 
     this.socket.outEven.subscribe((res) => {
-      const { prevPost } = res;
-      // this.writeSingle(prevPost, false);
+      console.log(res);
+      const { prePos } = res;
+      this.pintarDibujo(prePos, false);
     });
   }
 
@@ -101,7 +102,7 @@ export class DrawComponent implements OnInit, AfterViewInit {
       const prePos = this.points[this.points.length - 1];
       const currentPos = this.points[this.points.length - 2];
       this.pintarEnCanvas(prePos, currentPos);
-      this.socket.emitEvent({ prePos });
+      if (emit) this.socket.emitEvent({ prePos });
     }
   }
 

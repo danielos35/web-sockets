@@ -22,7 +22,11 @@ io.on("connection", (socket) => {
   socket.join(nameRoom);
 
   socket.on("event", (res) => {
+    const data = res;
     console.log(res);
+
+    // Emitir a todos los dispositivos de una sala, excepto al autor
+    socket.to(nameRoom).emit("event", data);
   });
 
   console.log(`Dispositivo ${idHandShake} ${nameRoom}`);
