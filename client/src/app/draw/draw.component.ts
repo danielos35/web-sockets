@@ -6,6 +6,7 @@ import {
   OnInit,
   AfterViewInit,
 } from '@angular/core';
+import { SocketsService } from '../services/sockets.service';
 
 @Component({
   selector: 'app-draw',
@@ -32,6 +33,14 @@ export class DrawComponent implements OnInit, AfterViewInit {
   */
 
   private points: Array<any> = [];
+
+  constructor(private socket: SocketsService) {
+    this.socket.listen();
+    this.socket.outEven.subscribe((res) => {
+      const { prevPost } = res;
+      // this.writeSingle(prevPost, false);
+    });
+  }
 
   ngOnInit(): void {}
 
@@ -92,6 +101,7 @@ export class DrawComponent implements OnInit, AfterViewInit {
       const prePos = this.points[this.points.length - 1];
       const currentPos = this.points[this.points.length - 2];
       this.pintarEnCanvas(prePos, currentPos);
+      this.socket.emitEvent({ prePos });
     }
   }
 

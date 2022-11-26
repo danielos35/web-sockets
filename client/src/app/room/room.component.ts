@@ -14,10 +14,11 @@ export class RoomComponent implements OnInit {
     private router: ActivatedRoute,
     private CookieService: CookieService
   ) {
-    this.room = this.router.snapshot.paramMap.get('room_number') || '';
+
   }
 
   ngOnInit(): void {
+    this.room = this.router.snapshot.paramMap.get('room_number') || '';
     this.CookieService.set('room', this.room);
   }
 }

@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { EventEmitter, Injectable, Output } from '@angular/core';
 import { Socket } from 'ngx-socket-io';
 import { CookieService } from 'ngx-cookie-service';
 
@@ -6,19 +6,25 @@ import { CookieService } from 'ngx-cookie-service';
   providedIn: 'root',
 })
 export class SocketsService extends Socket {
+  @Output() outEven: EventEmitter<any> = new EventEmitter();
+
   constructor(public cookieService: CookieService) {
     super({
-      // URL del back
-      url: 'http://localhost:3000/',
+      url: 'http://localhost:3000',
       options: {
         query: {
           nameRoom: cookieService.get('room'),
         },
       },
     });
+    this.listen();
   }
 
-  emitEvent = (playLoad = {}) => {
-    this.ioSocket.emit('event', playLoad);
+  listen = () => {
+    this.ioSocket.on('event', (res: any) => this.outEven.emit(res));
+  };
+
+  emitEvent = (payload = {}) => {
+    this.ioSocket.emit('event', payload);
   };
 }

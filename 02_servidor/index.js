@@ -11,16 +11,23 @@ const io = require("socket.io")(http, {
 
 // <<<<<<< DRAW >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
-io.on('conection', (socket) => {
-
+io.on("connection", (socket) => {
   // Capturar id que se genera por cada conexión
   const idHandShake = socket.idHandShake;
 
+  console.log("conectado");
   // Nombre de la sala que estamos pasando por el socket
   const { nameRoom } = socket.handshake.query;
 
+  // Crear grupo
+  socket.join(nameRoom);
+
+  socket.on("event", (res) => {
+    console.log(res);
+  });
+
   console.log(`Dispositivo ${idHandShake} ${nameRoom}`);
-})
+});
 
 
 
@@ -89,11 +96,11 @@ io.on("connection", (socket) => {
 });
 */
 
-io.emit("test2", { servidor: "servidor 1616" });
+// io.emit("test2", { servidor: "servidor 1616" });
 
-app.get("/", (req, res) => {
-  res.send("<h1>HolaMundo</h1>");
-});
+// app.get("/", (req, res) => {
+//   res.send("<h1>HolaMundo</h1>");
+// });
 
 http.listen(3000, () => {
   console.log("escuchando en puerto 3000");
