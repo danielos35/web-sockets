@@ -13,11 +13,10 @@ const io = require("socket.io")(http, {
 
 io.on("connection", (socket) => {
   // Capturar id que se genera por cada conexión
-  const idHandShake = socket.idHandShake;
+  const idHandShake = socket.id;
 
-  console.log("conectado");
   // Nombre de la sala que estamos pasando por el socket
-  const { nameRoom } = socket.handshake.query;
+  let { nameRoom } = socket.handshake.query;
 
   // Crear grupo
   socket.join(nameRoom);

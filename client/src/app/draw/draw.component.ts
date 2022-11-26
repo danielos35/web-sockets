@@ -35,7 +35,7 @@ export class DrawComponent implements OnInit, AfterViewInit {
   private points: Array<any> = [];
 
   constructor(private socket: SocketsService) {
-    this.socket.listen();
+
     this.socket.outEven.subscribe((res) => {
       const { prevPost } = res;
       // this.writeSingle(prevPost, false);
